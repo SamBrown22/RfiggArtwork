@@ -2,28 +2,36 @@
 
 import React, { useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'; // Import OrbitControls
 
 // Define the shape of a product
-interface Product {
-  id: number;
-  imageUrl: string; // Add the imageUrl field to each product
+interface GalleryItem {
+  _id: string;
+  title: string;
+  imageUrl: string;
+  description: string;
+  imageSize: { width: number, height: number };
 }
 
 const ThreeScene = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
 
   useEffect(() => {
-    // Simulate fetching products
-    const mockProducts: Product[] = Array.from({ length: 8 }, (_, index) => ({
-      id: index,
-      imageUrl: `Snowsports.jpg`, // Example photo URL
-    }));
-    setProducts(mockProducts);
+    // Fetch the gallery items from your API
+    const fetchGalleryItems = async () => {
+      try {
+        const response = await fetch('/api/gallery');
+        const data = await response.json();
+        setGalleryItems(data);
+      } catch (error) {
+        console.error('Failed to fetch gallery items:', error);
+      }
+    };
+
+    fetchGalleryItems();
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || products.length === 0) return;
+    if (typeof window === 'undefined' || galleryItems.length === 0) return;
 
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -41,23 +49,15 @@ const ThreeScene = () => {
     }
 
     // Create camera
-    const camera = new THREE.PerspectiveCamera(75, w / h, 0.2, 100);
+    const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
     camera.position.set(0, 2, 15); // Position camera at the start of the corridor
 
     // Create scene
     const scene = new THREE.Scene();
 
     // Add lighting (hemisphere light for a soft lighting effect)
-    const hemilight = new THREE.HemisphereLight(0xffffff, 0x080820, 0.2); // Lower intensity for soft ambient light
+    const hemilight = new THREE.HemisphereLight(0xffffff, 0x080820, 0.1); // Lower intensity for soft ambient light
     scene.add(hemilight);
-
-    // Set up OrbitControls to allow moving around
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
-    controls.screenSpacePanning = false;
-    controls.maxPolarAngle = Math.PI / 2; // Limit the camera to look straight up and down
-    controls.minPolarAngle = Math.PI / 2; // Same for the minimum angle, preventing going below
 
     // Create the floor (a simple plane)
     const floorGeometry = new THREE.PlaneGeometry(100, 100); // Larger plane for the floor
@@ -69,31 +69,31 @@ const ThreeScene = () => {
     scene.add(floor);
 
     // Create the gallery walls (corridor effect)
-    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xFFDEB3});
+    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xFFDEB3 });
 
     const totalLength = 50; // Length of the corridor
     const wallThickness = 2; // Thicker walls
 
     // Left wall (using BoxGeometry for thickness)
-    const leftWallGeometry = new THREE.BoxGeometry(wallThickness, 10, totalLength);
+    const leftWallGeometry = new THREE.BoxGeometry(wallThickness, 3, totalLength);
     const leftWall = new THREE.Mesh(leftWallGeometry, wallMaterial);
-    leftWall.position.set(-12, 3, 0);
+    leftWall.position.set(-12, -2, 0);
     leftWall.receiveShadow = true;
     scene.add(leftWall);
 
     // Right wall (using BoxGeometry for thickness)
-    const rightWallGeometry = new THREE.BoxGeometry(wallThickness, 10, totalLength);
+    const rightWallGeometry = new THREE.BoxGeometry(wallThickness, 3, totalLength);
     const rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial);
-    rightWall.position.set(12, 3, 0);
+    rightWall.position.set(12, -2, 0);
     rightWall.receiveShadow = true;
     scene.add(rightWall);
 
-    // Create the corridor layout (artworks positioned along the sides)
-    const boxGeometry = new THREE.BoxGeometry(0.1, 4, 4); // The artwork inside the frame
+    galleryItems.forEach((GalleryItem, index) => {
+      // Create the corridor layout (artworks positioned along the sides)
+      const boxGeometry = new THREE.BoxGeometry(0.1, GalleryItem.imageSize.height / 20, GalleryItem.imageSize.width / 20); // The artwork inside the frame
 
-    products.forEach((product, index) => {
       const textureLoader = new THREE.TextureLoader();
-      textureLoader.load(product.imageUrl, (texture) => {
+      textureLoader.load(GalleryItem.imageUrl, (texture) => {
         texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
         // Create materials for the artwork box
@@ -154,14 +154,82 @@ const ThreeScene = () => {
       });
     });
 
+    // Set up movement (W, A, S, D keys)
+    const speed = 0.1;
+    let moveForward = false;
+    let moveBackward = false;
+    let moveLeft = false;
+    let moveRight = false;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      switch (event.code) {
+        case 'KeyW':
+          moveForward = true;
+          break;
+        case 'KeyS':
+          moveBackward = true;
+          break;
+        case 'KeyA':
+          moveLeft = true;
+          break;
+        case 'KeyD':
+          moveRight = true;
+          break;
+      }
+    };
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      switch (event.code) {
+        case 'KeyW':
+          moveForward = false;
+          break;
+        case 'KeyS':
+          moveBackward = false;
+          break;
+        case 'KeyA':
+          moveLeft = false;
+          break;
+        case 'KeyD':
+          moveRight = false;
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
+
+    let rotationX = 0; // Current rotation
+    let rotationY = 0;
+    const sensitivity = 0.001; // Adjust this for rotation sensitivity
+    
+    const onMouseMove = (event: MouseEvent) => {
+        const deltaX = event.movementX || 0;
+        const deltaY = event.movementY || 0;
+      
+        // Update rotation based on delta
+        rotationX += deltaY * -sensitivity;
+        rotationY += deltaX * -sensitivity;
+      };
+    document.addEventListener('mousemove', onMouseMove);
+
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
 
-      // Update controls
-      controls.update();
+      // Apply movement velocity
+      if (moveForward) camera.position.z -= speed;
+      if (moveBackward) camera.position.z += speed;
+      if (moveLeft) camera.position.x -= speed;
+      if (moveRight) camera.position.x += speed;
 
-      // Render scene
+      // Keep the camera within reasonable bounds
+      camera.position.z = Math.max(-totalLength / 2, Math.min(totalLength / 2, camera.position.z));
+      camera.position.x = Math.max(-10, Math.min(10, camera.position.x));
+
+      // Apply mouse-based camera rotation
+      camera.rotation.x = rotationX;
+      camera.rotation.y = rotationY;
+
       renderer.render(scene, camera);
     };
 
@@ -171,8 +239,11 @@ const ThreeScene = () => {
     return () => {
       renderer.dispose();
       scene.clear();
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('keyup', onKeyUp);
+      document.removeEventListener('mousemove', onMouseMove);
     };
-  }, [products]);
+  }, [galleryItems]);
 
   return <div id="three-scene-container" style={{ width: '100%', height: '100vh' }}></div>;
 };
