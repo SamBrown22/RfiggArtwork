@@ -63,7 +63,7 @@ const ThreeScene = () => {
     scene.add(hemilight);
 
     // Create the floor (a simple plane)
-    const floorGeometry = new THREE.PlaneGeometry(100, 100); // Larger plane for the floor
+    const floorGeometry = new THREE.PlaneGeometry(50, 50); // Larger plane for the floor
     const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x999999, side: THREE.DoubleSide });
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2; // Rotate to make it horizontal

@@ -1,4 +1,3 @@
-// app/gallery/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -37,6 +36,12 @@ const GalleryPage = () => {
   return (
     <div>
       <h1>Gallery</h1>
+
+      {/* Link to the 3D Gallery Page */}
+      <a href="/three">
+        <button style={{ display: 'block', margin: '20px auto' }}>Go to 3D Gallery</button>
+      </a>
+
       <div className="gallery-container">
         {galleryItems.map((item) => (
           <div key={item._id} className="gallery-item">
