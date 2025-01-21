@@ -1,15 +1,14 @@
-// app/3d-gallery/page.tsx
-'use client';
+// app/three/page.tsx
 
 import ThreeScene from '../../Components/ThreeScene';
 
-const ThreeGalleryPage = () => {
+const ThreePage = () => {
   return (
     <div>
-      <h1 className="text-center text-3xl font-bold my-4 text-white">3D Gallery</h1>
+      <h1 style={{ textAlign: 'center', marginTop: '20px' }}>Three.js Scene in Next.js</h1>
       <ThreeScene />
     </div>
   );
 };
 
-export default ThreeGalleryPage;
+export default ThreePage;
