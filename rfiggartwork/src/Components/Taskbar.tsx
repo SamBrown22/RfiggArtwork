@@ -7,6 +7,7 @@ export const Taskbar = () => {
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
     { name: "Contact Us", href: "/contact" },
+    { name: "Basket", href: "/basket" },
   ];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
