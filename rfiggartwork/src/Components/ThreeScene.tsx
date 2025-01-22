@@ -53,7 +53,7 @@ const ThreeScene = () => {
 
     // Create camera
     const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
-    camera.position.set(0, 2, 15); // Position camera at the start of the corridor
+    camera.position.set(0, 2, 25); // Position camera at the start of the corridor
 
     // Create scene
     const scene = new THREE.Scene();
@@ -141,7 +141,7 @@ const ThreeScene = () => {
         scene.add(plaque);
 
         // Create the text geometry
-        const text = GalleryItem.title;
+        const text = GalleryItem.title.toLocaleUpperCase();
         const fontLoader = new FontLoader();
         fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', (font) => {
         const textGeometry = new TextGeometry(text, {
@@ -162,7 +162,7 @@ const ThreeScene = () => {
         const textYPosition = plaqueY; // Keep the Y position the same as the plaque
 
         // Set text position
-        const textXPlacement = x > 0 ? x - 0.01 : x + 0.01; // Adjust the x position based on the wall
+        const textXPlacement = x > 0 ? x - 0.001 : x + 0.001; // Adjust the x position based on the wall
 
         // Adjust the z position to center the text
         const textZPlacement = x > 0 ? z - (textDepth/2) : z + (textDepth/2); // Center the text by adjusting with half its depth
@@ -185,11 +185,11 @@ const ThreeScene = () => {
 
         // Create a spotlight for each artwork
         const spotLight = new THREE.SpotLight(0xFFFFE0, 30); // Increased intensity to 10 for brighter spotlight
-        spotLight.position.set(x + (x === -11 ? 2 : -2), 10, z); // Adjust position based on wall
+        spotLight.position.set(x + (x === -11 ? 2 : -2), 9, z); // Adjust position based on wall
         spotLight.angle = Math.PI / 6; // Wider cone angle to cover the frame
         spotLight.penumbra = 0.2; // Softer edge of the light cone
         spotLight.decay = 1; // Decay set to 1 for normal falloff
-        spotLight.distance = 20; // Increased distance for the spotlight range
+        spotLight.distance = 12; // Increased distance for the spotlight range
         spotLight.castShadow = true;
 
         // Configure shadow properties
