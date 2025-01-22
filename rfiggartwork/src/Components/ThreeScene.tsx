@@ -257,9 +257,15 @@ const ThreeScene = () => {
     document.addEventListener('keyup', onKeyUp);
 
     const controls = new PointerLockControls(camera, renderer.domElement);
-    document.addEventListener('click', () => {
-      controls.lock();
-    });
+    const sceneContainer: HTMLElement | null = document.getElementById('scene-container');
+
+    if (sceneContainer) {
+      sceneContainer.addEventListener('click', () => {
+        controls.lock();
+      });
+    } else {
+      console.error('Scene container element not found.');
+    }
 
     // Animation loop
     const animate = () => {
@@ -301,7 +307,7 @@ const ThreeScene = () => {
     };
   }, [galleryItems]);
 
-  return <div id="three-scene-container" style={{ width: '100%', height: '100vh' }}></div>;
+  return <div id="three-scene-container" style={{ width: '50%', height: '100vh' }}></div>;
 };
 
 export default ThreeScene;

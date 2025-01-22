@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export const Taskbar = () => {
   const navigationtabs = [
@@ -17,10 +18,9 @@ export const Taskbar = () => {
   return (
     <div className="max-h-24 min-h-18 bg-base p-4 shadow-md relative">
       <nav className="flex items-center justify-between">
-        {/* Logo/Brand */}
-        <div className="flex items-center space-x-4">
-          <h1 className="text-2xl font-bold text-white">Ricky Figg Artwork</h1>
-        </div>
+        <Link href="/" className="flex items-center space-x-4">
+            <h1 className="text-2xl font-bold text-white">Ricky Figg Artwork</h1>
+        </Link>
 
         {/* Hamburger Icon (Visible on small screens) */}
         <div className="lg:hidden">
