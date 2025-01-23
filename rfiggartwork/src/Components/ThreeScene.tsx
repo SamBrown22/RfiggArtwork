@@ -307,7 +307,7 @@ const ThreeScene = () => {
     };
   }, [galleryItems]);
 
-  return <div id="three-scene-container" style={{ width: '50%', height: '100vh' }}></div>;
+  return <div id="three-scene-container" style={{ width: '50%', height: '' }}></div>;
 };
 
 export default ThreeScene;

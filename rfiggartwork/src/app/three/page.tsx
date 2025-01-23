@@ -10,18 +10,19 @@ const ThreePage = () => {
       </header>
 
       <main className="flex flex-col items-center w-full">
+
+        <div
+          id="scene-container"
+          className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-800 "
+        >
+          <ThreeScene />
+        </div>
+
         <a href="/gallery">
           <button className="bg-blue-500 text-white px- py-2 rounded-md shadow-md hover:bg-blue-600 transition-all mb-6">
             Go to Gallery
           </button>
         </a>
-
-        <div
-          id="scene-container"
-          className="w-full max-w-6xl h-[600px] rounded-lg shadow-lg overflow-hidden bg-gray-800 "
-        >
-          <ThreeScene />
-        </div>
       </main>
     </div>
   );

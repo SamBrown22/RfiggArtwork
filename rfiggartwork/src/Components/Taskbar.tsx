@@ -16,7 +16,7 @@ export const Taskbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <div className="max-h-24 min-h-18 bg-base p-4 shadow-md relative">
+    <div className="max-h-24 bg-base p-4 shadow-md relative">
       <nav className="flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-4">
             <h1 className="text-2xl font-bold text-white">Ricky Figg Artwork</h1>
