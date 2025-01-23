@@ -53,7 +53,7 @@ const CreateProductPage = () => {
                                     value={product.height}
                                     onChange={(e) => setProduct({ ...product, height: e.target.value })}
                                 />
-                                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">cm</span>
+                                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 border-l-2 border-gray-400 ps-2">cm</span>
                             </div>
                             <div className="relative flex-grow ml-4">
                                 <input
@@ -63,7 +63,7 @@ const CreateProductPage = () => {
                                     value={product.width}
                                     onChange={(e) => setProduct({ ...product, width: e.target.value })}
                                 />
-                                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">cm</span>
+                                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 border-l-2  border-gray-400 ps-2">cm</span>
                             </div>
                         </div>
                         <input
