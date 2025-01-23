@@ -36,8 +36,14 @@ const ThreeScene = () => {
   useEffect(() => {
     if (typeof window === 'undefined' || galleryItems.length === 0) return;
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const screenContainer = document.getElementById('screenContainer');
+    let h = 0;
+    let w = 0;
+    if (screenContainer) {
+      const {height, width} = screenContainer.getBoundingClientRect();
+      h = height;
+      w = width;
+    }
 
     // Create renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -307,7 +313,7 @@ const ThreeScene = () => {
     };
   }, [galleryItems]);
 
-  return <div id="three-scene-container" style={{ width: '50%', height: '' }}></div>;
+  return <div id="three-scene-container"></div>;
 };
 
 export default ThreeScene;
