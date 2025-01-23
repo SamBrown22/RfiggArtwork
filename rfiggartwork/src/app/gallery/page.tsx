@@ -38,7 +38,7 @@ const GalleryPage = () => {
       <h1>Gallery</h1>
 
       {/* Link to the 3D Gallery Page */}
-      <a href="/three">
+      <a href="/gallery/three">
         <button style={{ display: 'block', margin: '20px auto' }}>Go to 3D Gallery</button>
       </a>
 

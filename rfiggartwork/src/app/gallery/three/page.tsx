@@ -1,6 +1,6 @@
 // app/three/page.tsx
 
-import ThreeScene from '../../Components/ThreeScene';
+import ThreeScene from '../../../Components/ThreeScene';
 
 const ThreePage = () => {
   return (
