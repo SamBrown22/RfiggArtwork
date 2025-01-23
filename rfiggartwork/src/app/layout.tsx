@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Taskbar/>
-        <main className="m-auto max-h-[calc(100vh-96px)] min-w-[300px] max-w-full lg:h-[calc(100vh-96px)]">
+        <main className="m-auto h-[calc(100vh-96px)] min-w-[300px] max-w-full lg:h-[calc(100vh-96px)]">
           {children}
         </main>
       </body>
