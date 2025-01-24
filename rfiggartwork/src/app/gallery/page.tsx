@@ -1,13 +1,8 @@
 'use client';
 
+import ProductCard from '@/Components/ProductCard';
 import { useEffect, useState } from 'react';
-
-interface GalleryItem {
-  _id: string;
-  title: string;
-  imageUrl: string;
-  description: string;
-}
+import { Product as GalleryItem } from '@/types/Product';
 
 const GalleryPage = () => {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -44,11 +39,7 @@ const GalleryPage = () => {
 
       <div className="gallery-container">
         {galleryItems.map((item) => (
-          <div key={item._id} className="gallery-item">
-            <img src={item.imageUrl} alt={item.title} className="gallery-image" />
-            <h2>{item.title}</h2>
-            <p>{item.description}</p>
-          </div>
+          <ProductCard key={item._id} product={item} />
         ))}
       </div>
 
