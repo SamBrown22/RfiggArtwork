@@ -25,10 +25,15 @@ export async function GET() {
 }
 
 export async function POST(product: ProductType) {
+  console.log('Product received:', product);
   try {
     await connectToDatabase(); // Ensure we are connected to the database
 
-    const products = await Product.create([]
+    const newProduct = await Product.create(product); // Create a new product in the database
+    console.log('Product created:', newProduct);
+  }catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
   }
   return NextResponse.json({ message: 'POST request received' });
 }

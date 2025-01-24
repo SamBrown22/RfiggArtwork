@@ -15,10 +15,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true, // Field is required
     },
-    createdAt: {
-      type: Date,
-      default: Date.now, // Automatically set the current date when a document is created
-    },
   },
   { timestamps: true } // Optionally, use Mongoose's built-in timestamps for createdAt and updatedAt
 );
