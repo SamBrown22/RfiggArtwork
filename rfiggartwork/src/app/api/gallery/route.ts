@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import Product from '../../../models/Product'; // Correct path to the Product model
+import  Product from '../../../models/Product'; // Correct path to the Product model
+import { Product as ProductType } from '../../../types/Product'; // Correct path to the Product type
 import connectToDatabase from '../../../lib/mongoose'; // Correct path to the mongoose connection file
 
 // GET request handler to fetch all products
@@ -23,3 +24,11 @@ export async function GET() {
   }
 }
 
+export async function POST(product: ProductType) {
+  try {
+    await connectToDatabase(); // Ensure we are connected to the database
+
+    const products = await Product.create([]
+  }
+  return NextResponse.json({ message: 'POST request received' });
+}
