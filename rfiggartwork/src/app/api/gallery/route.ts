@@ -24,16 +24,39 @@ export async function GET() {
   }
 }
 
-export async function POST(product: ProductType) {
-  console.log('Product received:', product);
+export async function POST(request: Request): Promise<NextResponse> {
   try {
-    await connectToDatabase(); // Ensure we are connected to the database
+    // Parse the incoming JSON body
+    const body = await request.json();
+    console.log('Request body:', body);
 
-    const newProduct = await Product.create(product); // Create a new product in the database
+    // Check that all required fields are provided
+    const { title, imageUrl, description, imageSize, price } = body;
+
+    if (!title || !imageUrl || !description || !imageSize || !imageSize.width || !imageSize.height || !price) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Create a new product
+    const newProduct = new Product({
+      title,
+      imageUrl,
+      description,
+      imageSize,
+      price,
+    });
+
+    // Save the product to the database
+    await newProduct.save().catch((error: unknown) => {
+      console.error('Validation or save error:', error);
+      throw error;  // Re-throw the error to be caught in the try-catch block
+    });
+
     console.log('Product created:', newProduct);
-  }catch (error) {
-    console.error(error);
+
+    return NextResponse.json({ message: 'Product created successfully' }, { status: 201 });
+  } catch (error) {
+    console.error('Error:', error);
     return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
   }
-  return NextResponse.json({ message: 'POST request received' });
-}
+};

@@ -1,5 +1,4 @@
-export type Product ={
-  _id: string;
+export type Product = {
   title: string;
   imageUrl: string;
   description: string;
@@ -7,5 +6,4 @@ export type Product ={
     width: number;
     height: number;
   }
-
 }

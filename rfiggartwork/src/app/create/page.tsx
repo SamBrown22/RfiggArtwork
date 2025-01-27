@@ -1,15 +1,14 @@
 'use client';  // Add this to mark this as a Client Component
 
 import { useState } from 'react';
+import { Product } from '../../types/Product';
 
 const CreateProductPage = () => {
-    const [product, setProduct] = useState({
+    const [product, setProduct] = useState<Product>({
         title: '',
         description: '',
-        image: null as File | null,
-        height: '',
-        width: '',
-        price: ''
+        imageUrl: '/Wildlife.jpg',
+        imageSize: { width: 0, height: 0 },
     });
 
     const handleProductCreation = async (e: React.FormEvent) => {
@@ -61,7 +60,7 @@ const CreateProductPage = () => {
                         <input
                             type="file"
                             className="text-gray-400 border-2 border-black rounded-lg p-2 w-full"
-                            onChange={(e) => setProduct({ ...product, image: e.target.files ? e.target.files[0] : null })}
+
                         />
                         <div className="flex flex-row justify-between w-full">
                             <div className="relative flex-grow">
@@ -69,8 +68,8 @@ const CreateProductPage = () => {
                                     type="number"
                                     placeholder="Height"
                                     className="text-gray-950 w-full border-2 border-black rounded-lg p-2 pr-8"
-                                    value={product.height}
-                                    onChange={(e) => setProduct({ ...product, height: e.target.value })}
+                                    value={product.imageSize.height}
+                                    onChange={(e) => setProduct({ ...product, imageSize: { ...product.imageSize, height: parseInt(e.target.value) } })}
                                 />
                                 <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 border-l-2 border-gray-400 ps-2">cm</span>
                             </div>
@@ -79,19 +78,19 @@ const CreateProductPage = () => {
                                     type="number"
                                     placeholder="Width"
                                     className="text-gray-950 w-full border-2 border-black rounded-lg p-2 pr-8"
-                                    value={product.width}
-                                    onChange={(e) => setProduct({ ...product, width: e.target.value })}
+                                    value={product.imageSize.width}
+                                    onChange={(e) => setProduct({ ...product, imageSize: { ...product.imageSize, width: parseInt(e.target.value) } })}
                                 />
                                 <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 border-l-2  border-gray-400 ps-2">cm</span>
                             </div>
                         </div>
-                        <input
+                        {/* <input
                             type="number"
                             placeholder="Price"
                             className="text-gray-950 border-2 border-black rounded-lg p-2 w-full"
                             value={product.price}
                             onChange={(e) => setProduct({ ...product, price: e.target.value })}
-                        />
+                        /> */}
                         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Create Product</button>
                     </form>
                 </div>

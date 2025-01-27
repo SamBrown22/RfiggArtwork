@@ -15,6 +15,16 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true, // Field is required
     },
+    imageSize:{
+      height: {
+        type: Number,
+        required: true, // Field is required
+      },
+      width: {
+        type: Number,
+        required: true, // Field is required
+      },
+    },
   },
   { timestamps: true } // Optionally, use Mongoose's built-in timestamps for createdAt and updatedAt
 );
