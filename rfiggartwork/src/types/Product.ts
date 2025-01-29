@@ -5,5 +5,6 @@ export type Product = {
   imageSize: {
     width: number;
     height: number;
-  }
+  };
+  price: number;
 }

@@ -25,6 +25,10 @@ const productSchema = new mongoose.Schema(
         required: true, // Field is required
       },
     },
+    price: {
+      type: Number,
+      required: true, // Field is required
+    },
   },
   { timestamps: true } // Optionally, use Mongoose's built-in timestamps for createdAt and updatedAt
 );

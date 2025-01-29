@@ -26,6 +26,8 @@ export async function GET() {
 
 export async function POST(request: Request): Promise<NextResponse> {
   try {
+    await connectToDatabase(); // Ensure we are connected to the database
+    
     // Parse the incoming JSON body
     const body = await request.json();
     console.log('Request body:', body);
@@ -34,6 +36,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const { title, imageUrl, description, imageSize, price } = body;
 
     if (!title || !imageUrl || !description || !imageSize || !imageSize.width || !imageSize.height || !price) {
+      console.log('Missing required fields');
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -45,6 +48,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       imageSize,
       price,
     });
+
+    console.log('New product:', newProduct);
 
     // Save the product to the database
     await newProduct.save().catch((error: unknown) => {
